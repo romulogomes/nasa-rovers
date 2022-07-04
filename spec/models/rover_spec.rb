@@ -2,35 +2,35 @@
 
 require 'rails_helper'
 
-RSpec.describe Rover, type: :model do
-  DIRECTIONS = %i[W N E S].freeze
-
-  describe '.processar movimentos' do
+RSpec.describe NasaRover::Rover do
+  describe '#process_movements' do
+    let(:directions) { %i[W N E S].freeze }
     let(:direction) { 'N' }
-    let(:rover) { Rover.new(1, 1, direction) }
+    let(:plateau) { NasaRover::Plateau.new(size: '5 5') }
+    let(:rover) { described_class.new(plateau: plateau, coordinate_x: 1, coordinate_y: 1, direction: direction) }
 
-    context 'movimento para esquerda (L)' do
-      it 'deve diminuir direction por 1' do
+    context 'movement for left (L)' do
+      it 'decrease direction by 1' do
         expect { rover.process_movements('L') }.to change { rover.direction }.by(-1)
       end
 
-      context '4 moviments L' do
+      context 'more of 4 movements L' do
         let(:direction) { 'W' }
         it do
-          expect { rover.process_movements('LLLL') }.not_to change { DIRECTIONS[rover.direction] }.from(:W)
+          expect { rover.process_movements('LLLLL') }.to change { directions[rover.direction] }.from(:W).to(:S)
         end
       end
     end
 
-    context 'movimento para direita (R)' do
-      it 'deve aumentar direction por 1' do
+    context 'movement para direita (R)' do
+      it 'increase direction by 1' do
         expect { rover.process_movements('R') }.to change { rover.direction }.by(1)
       end
 
       context '4 moviments R' do
         let(:direction) { 'N' }
         it do
-          expect { rover.process_movements('RRRR') }.not_to change { DIRECTIONS[rover.direction] }.from(:N)
+          expect { rover.process_movements('RRRR') }.not_to change { directions[rover.direction] }.from(:N)
         end
       end
     end
@@ -61,6 +61,12 @@ RSpec.describe Rover, type: :model do
         it 'increment coordinate by 1 in the current direction' do
           expect { rover.process_movements('M') }.to change { rover.coordinate_y }.by(-1)
         end
+      end
+    end
+
+    context 'movement impossible' do
+      it do
+        expect { rover.process_movements('X') }.to raise_error(NasaRover::MovementImpossible)
       end
     end
   end
