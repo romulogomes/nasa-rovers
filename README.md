@@ -11,7 +11,8 @@ curl --location --request POST 'http://nasa-rover.herokuapp.com/run_rovers' \
 --form 'file=@"CAMINHO_DO_ARQUIVO_DE_TESTES"'
  ```
 
-ou se preferir, também pode ser testada através da request preparada no *Postman*, devendo ser colocado somente o arquivo de teste no menu **body->form_data->value*
+ou se preferir, também pode ser testada através da request preparada no *Postman*, devendo ser colocado somente o arquivo de teste no menu **body->form_data->value*.
+
 [Postman Request Link](https://www.postman.com/sitisolucoes/workspace/nasarovers/request/3176468-9a3f7775-3f1d-4dd3-9f3e-184e7b2b9699)
 
 ### Testes
